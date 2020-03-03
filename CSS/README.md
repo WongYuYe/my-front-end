@@ -498,7 +498,21 @@ content 属性专门应用在 before/after 伪元素上，用于插入额外内�
 ### 请解释一下 CSS3 的 Flexbox（弹性盒布局模型）以及适用场景？
 
 Flexbox 用于不同尺寸屏幕中创建可自动扩展和收缩布局
-- display: flex
+- display: flex, 
+- flex-direction(方向): row | row-reverse | column | column-reverse
+- flex-wrap(换行),: wrap | nowrap
+- flex-flow: direction wrap
+- justify-content: flex-start | flex-end | center | space-between | space-around 主轴X轴
+- align-items: flex-start | flex-end | center | baseline | strech 交叉轴Y轴
+- align-content: 多交叉轴，及多级flex布局 flex-start | flex-end | center | strech | space-between | space-around
+
+- flex-item:
+- flex-grow: 扩展
+- flex-shrink: 缩放
+- flex-basic: 项目大小
+- flex: none | [<flex-grow, flex-shrink> || flex-basic], 默认值0 1 auto，快捷值auto(1 1 auto), none(0 0 auto) 
+- order: 顺序，越小越前面
+- align-self: 继承align-items，默认auto | flex-start | flex-end | center | baseline | strech
 
 
 ### 请写出多种等高布局
