@@ -135,7 +135,7 @@ JavaScript 变量声明提升：
 
 ### JavaScript 有几种类型的值？，你能画一下他们的内存图吗
 
--   原始数据类型（Undefined，Null，Boolean，Number、String）-- 栈
+-   原始数据类型（Undefined，Null，Boolean，Number、String, Symbol）-- 栈
 -   引用数据类型（对象、数组和函数）-- 堆
 -   两种类型的区别是：存储位置不同：
 -   原始数据类型是直接存储在栈(stack)中的简单数据段，占据空间小、大小固定，属于被频繁使用数据；
