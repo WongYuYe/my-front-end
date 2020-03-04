@@ -19,12 +19,11 @@ JavaScript 由以下三部分组成：
 ### 介绍 JS 有哪些内置对象？
 
 -   数据封装类对象：Object、Array、Boolean、Number、String
--   其他对象：Function、Arguments、Math、Date、RegExp、Error
+-   其他对象：Function、Arguments、Math、Date、RegExp、Error、JSON
 -   ES6 新增对象：Symbol、Map、Set、Promises、Proxy、Reflect
 
 ### 说几条写 JavaScript 的基本规范？
 
--   代码缩进，建议使用“四个空格”缩进
 -   代码段使用花括号{}包裹
 -   语句结束使用分号;
 -   变量和函数在使用前进行声明
@@ -61,8 +60,8 @@ JavaScript 由以下三部分组成：
 
 ### offsetWidth/offsetHeight,clientWidth/clientHeight 与 scrollWidth/scrollHeight 的区别
 
--   offsetWidth/offsetHeight 返回值包含 content + padding + border，效果与 e.getBoundingClientRect()相同
 -   clientWidth/clientHeight 返回值只包含 content + padding，如果有滚动条，也不包含滚动条
+-   offsetWidth/offsetHeight 返回值包含 content + padding + border，效果与 e.getBoundingClientRect()相同
 -   scrollWidth/scrollHeight 返回值包含 content + padding + 溢出内容的尺寸
 
 ### 描述浏览器的渲染过程，DOM 树和渲染树的区别？
@@ -95,7 +94,7 @@ DOM 树 和 渲染树 的区别：
 -   尽量避免用 table 布局（table 元素一旦触发回流就会导致 table 里所有的其它元素回流）
 -   避免使用 css 表达式(expression)，因为每次调用都会重新计算值（包括加载页面）
 -   尽量使用 css 属性简写，如：用 border 代替 border-width, border-style, border-color
-    批量修改元素样式：elem.className 和 elem.style.cssText 代替 elem.style.xxx
+-   批量修改元素样式：elem.className 和 elem.style.cssText 代替 elem.style.xxx
 
 ### script 的位置是否会影响首屏显示时间？
 
