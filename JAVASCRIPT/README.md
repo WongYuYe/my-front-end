@@ -978,6 +978,7 @@ func.bind(that)(arg1, arg2);
   - arr.concat(arr1, arr2, arrn);
   - arr.join(",");
   - arr.sort(func);
+  - arr.push(e1);
   - arr.pop();
   - arr.push(e1, e2, en);
   - arr.shift();
@@ -1042,12 +1043,8 @@ a == b; // true
 ```js
 typeof 123; // "number"
 typeof new Number(123); // "object"
-123 instanceof
-  Number(
-    // false
-    new Number(123)
-  ) instanceof
-  Number; // true
+123 instanceof Number // false
+new Number(123) instanceof Number; // true
 123 === new Number(123); // false
 ```
 
@@ -1068,10 +1065,8 @@ if (new Boolean(false)) {
 只有使用了 valueOf 后才是真正的转换布尔值，与上面包装对象与原始资料转换说明的相同:
 
 ```js
-!!new Boolean(false)(
-  //true
-  new Boolean(false)
-).valueOf(); //false
+!!new Boolean(false) //true
+new Boolean(false).valueOf(); //false
 ```
 
 ### 为什么 JS 是单线程,而不是多线程 [常考]
