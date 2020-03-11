@@ -48,17 +48,213 @@ window.onscroll = throttle(function () {
 
 [剖析 Promise 内部结构，一步一步实现一个完整的、能通过所有 Test case 的 Promise 类 ](https://github.com/xieranmaya/blog/issues/3)
 
-```js
+##### Promise标准解读
 
+- 只有一个then方法，没有catch，race，all等方法，甚至没有构造函数
+
+Promise标准中仅指定了Promise对象的then方法的行为，其它一切我们常见的方法/函数都并没有指定，包括catch，race，all等常用方法，甚至也没有指定该如何构造出一个Promise对象，另外then也没有一般实现中（Q, $q等）所支持的第三个参数，一般称onProgress
+
+- then方法返回一个新的Promise
+
+Promise的then方法返回一个新的Promise，而不是返回this，此处在下文会有更多解释
+```
+promise2 = promise1.then(alert)
+promise2 != promise1 // true
+```
+- 不同Promise的实现需要可以相互调用(interoperable)
+
+- Promise的初始状态为pending，它可以由此状态转换为fulfilled（本文为了一致把此状态叫做resolved）或者rejected，一旦状态确定，就不可以再次转换为其它状态，状态确定的过程称为settle
+
+
+```js
+try {
+  module.exports = Promise;
+} catch (e) {}
+
+function Promise(executor) {
+  var self = this;
+
+  self.status = "pending";
+  self.onResolvedCallback = [];
+  self.onRejectedCallback = [];
+
+  function resolve(value) {
+    if (value instanceof Promise) {
+      return value.then(resolve, reject);
+    }
+    setTimeout(function() {
+      // 异步执行所有的回调函数
+      if (self.status === "pending") {
+        self.status = "resolved";
+        self.data = value;
+        for (var i = 0; i < self.onResolvedCallback.length; i++) {
+          self.onResolvedCallback[i](value);
+        }
+      }
+    });
+  }
+
+  function reject(reason) {
+    setTimeout(function() {
+      // 异步执行所有的回调函数
+      if (self.status === "pending") {
+        self.status = "rejected";
+        self.data = reason;
+        for (var i = 0; i < self.onRejectedCallback.length; i++) {
+          self.onRejectedCallback[i](reason);
+        }
+      }
+    });
+  }
+
+  try {
+    executor(resolve, reject);
+  } catch (reason) {
+    reject(reason);
+  }
+}
+
+function resolvePromise(promise2, x, resolve, reject) {
+  var then;
+  var thenCalledOrThrow = false;
+
+  if (promise2 === x) {
+    return reject(new TypeError("Chaining cycle detected for promise!"));
+  }
+
+  if (x instanceof Promise) {
+    if (x.status === "pending") {
+      //because x could resolved by a Promise Object
+      x.then(function(v) {
+        resolvePromise(promise2, v, resolve, reject);
+      }, reject);
+    } else {
+      //but if it is resolved, it will never resolved by a Promise Object but a static value;
+      x.then(resolve, reject);
+    }
+    return;
+  }
+
+  if (x !== null && (typeof x === "object" || typeof x === "function")) {
+    try {
+      then = x.then; //because x.then could be a getter
+      if (typeof then === "function") {
+        then.call(
+          x,
+          function rs(y) {
+            if (thenCalledOrThrow) return;
+            thenCalledOrThrow = true;
+            return resolvePromise(promise2, y, resolve, reject);
+          },
+          function rj(r) {
+            if (thenCalledOrThrow) return;
+            thenCalledOrThrow = true;
+            return reject(r);
+          }
+        );
+      } else {
+        resolve(x);
+      }
+    } catch (e) {
+      if (thenCalledOrThrow) return;
+      thenCalledOrThrow = true;
+      return reject(e);
+    }
+  } else {
+    resolve(x);
+  }
+}
+
+Promise.prototype.then = function(onResolved, onRejected) {
+  var self = this;
+  var promise2;
+  onResolved =
+    typeof onResolved === "function"
+      ? onResolved
+      : function(v) {
+          return v;
+        };
+  onRejected =
+    typeof onRejected === "function"
+      ? onRejected
+      : function(r) {
+          throw r;
+        };
+
+  if (self.status === "resolved") {
+    return (promise2 = new Promise(function(resolve, reject) {
+      setTimeout(function() {
+        // 异步执行onResolved
+        try {
+          var x = onResolved(self.data);
+          resolvePromise(promise2, x, resolve, reject);
+        } catch (reason) {
+          reject(reason);
+        }
+      });
+    }));
+  }
+
+  if (self.status === "rejected") {
+    return (promise2 = new Promise(function(resolve, reject) {
+      setTimeout(function() {
+        // 异步执行onRejected
+        try {
+          var x = onRejected(self.data);
+          resolvePromise(promise2, x, resolve, reject);
+        } catch (reason) {
+          reject(reason);
+        }
+      });
+    }));
+  }
+
+  if (self.status === "pending") {
+    // 这里之所以没有异步执行，是因为这些函数必然会被resolve或reject调用，而resolve或reject函数里的内容已是异步执行，构造函数里的定义
+    return (promise2 = new Promise(function(resolve, reject) {
+      self.onResolvedCallback.push(function(value) {
+        try {
+          var x = onResolved(value);
+          resolvePromise(promise2, x, resolve, reject);
+        } catch (r) {
+          reject(r);
+        }
+      });
+
+      self.onRejectedCallback.push(function(reason) {
+        try {
+          var x = onRejected(reason);
+          resolvePromise(promise2, x, resolve, reject);
+        } catch (r) {
+          reject(r);
+        }
+      });
+    }));
+  }
+};
+
+Promise.prototype.catch = function(onRejected) {
+  return this.then(null, onRejected);
+};
+
+Promise.deferred = Promise.defer = function() {
+  var dfd = {};
+  dfd.promise = new Promise(function(resolve, reject) {
+    dfd.resolve = resolve;
+    dfd.reject = reject;
+  });
+  return dfd;
+};
 ```
 
-### 数组降重
+### 数组去重
 
 [优雅的数组降维——Javascript 中 apply 方法的妙用](https://www.cnblogs.com/front-end-ralph/p/4871332.html)
 
 1. 朴素的转换,利用 for
 
 ```js
+
 
 ```
 
@@ -76,7 +272,7 @@ arr 的每一个元素都是一个数组，作为 concat 方法的参数，数�
 3. 利用 apply 和 concat 转换
 
 ```js
-
+Array.prototype.concat.apply([], arr)
 ```
 
 arr 作为 apply 方法的第二个参数，本身是一个数组，数组中的每一个元素（还是数组，即二维数组的第二维）会被作为参数依次传入到 concat 中，效果等同于[].concat([1,2], [3,4], [5,6])。
@@ -115,7 +311,14 @@ _.shuffle = function(obj) {
 [bind 方法的兼容实现](https://github.com/hanzichi/underscore-analysis/issues/19)
 
 ```js
-
+if (!Function.prototype.bind) {
+  Function.prototype.bind = function (ctx) {
+    const args = arguments;
+    return function () {
+      this.apply(ctx, Array.prototype.slice.call(args, 1))
+    }
+  }
+}
 ```
 
 [underscore 源码](https://github.com/hanzichi/underscore-analysis/blob/master/underscore-1.8.3.js/src/underscore-1.8.3.js#L698-L719%E3%80%82)
@@ -165,4 +368,5 @@ _.bind = function(func, context) {
 描述：数字的千位分隔符表示法，比如`126186312`转化为`126,186,312`。这个题目主要考察正则表达式，用正则可以很方便的进行字符串转化
 
 ```js
+'126186312'.replace(/\d{1,3}(?=(\d{3})+$)/g, '$&,')
 ```
