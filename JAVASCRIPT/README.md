@@ -1069,6 +1069,12 @@ if (new Boolean(false)) {
 new Boolean(false).valueOf(); //false
 ```
 
+### typeof 的原理，与 instanceof 、 Object.toString.call() 的区别
+
+- js在底层存储变量，会在低位1-3存储类型信息，如000对象、010浮点数、100字符串、110布尔、1整数，null都为0，undefined-2^30
+typeof不能判断array、object、null
+instanceof不能判断Number、String、Boolean
+
 ### 为什么 JS 是单线程,而不是多线程 [常考]
 
 - 单线程是指 JavaScript 在执行的时候，有且只有一个主线程来处理所有的任务。
