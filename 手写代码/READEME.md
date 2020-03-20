@@ -370,3 +370,18 @@ _.bind = function(func, context) {
 ```js
 '126186312'.replace(/\d{1,3}(?=(\d{3})+$)/g, '$&,')
 ```
+
+### 驼峰和下划线命名互转
+
+```js
+// 下划线->驼峰
+function toHump(str) {
+  return str.replace(/_(\w)/g, (all, letter) => {
+    return letter.toUpperCase();
+  })
+}
+// 驼峰->下划线
+function toLine(str) {
+  return str.replace(/[A-Z]/g, '_$1')
+}
+```
