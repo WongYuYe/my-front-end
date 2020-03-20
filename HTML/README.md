@@ -262,9 +262,16 @@ strong, em, ins, del, code
 <img src="#" alt="alt信息" title="title信息" />
 ```
 
-当图片不输出信息的时候，会显示 alt 信息；
-当图片正常输出的时候，不会出现 alt 信息；
-鼠标放上去都会出现 title 信息。
+### img标签之间的间距问题？
+
+内联元素垂直方向上产生间隙的原因：默认基线对齐方式导致空节点出现（vertical-align:baseline;）
+
+解决方案：
+1. 父元素font-size: 0； 
+2. 父元素vertical-align: middle
+3. img元素 display: inline -> block
+
+
 
 ### 另外还有一些关于 title 属性的知识：
 
