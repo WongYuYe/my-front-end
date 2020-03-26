@@ -1317,6 +1317,16 @@ alert(GetBytes("你好,as"));
 - call/applay 调用模式 Foo.foo.call(that, arg1, arg2);
 - bind 调用模式 Foo.foo.bind(that)(arg1, arg2)();
 
+### 箭头函数和function的区别？
+- this指向
+箭头函数this指向定义函数的环境，function定义的函数，this指向随着调用环境的变化而变化
+- 关于arguments
+该对象在箭头函数体内不存在，如要使用可以用rest参数代替
+- yield命令
+不可使用，因此箭头函数不能用作Generator函数
+- new
+不可使用new命令，因为没有自身的this,无法使用call、apply。没有Prototype属性。
+
 ### 简单实现 Function.bind 函数？
 
 ```js

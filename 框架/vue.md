@@ -316,3 +316,6 @@ devtoolPlugin 中提供了此功能。因为 dev 模式下所有的 state change
 axios 是请求后台资源的模块。 npm i axios -S
 
 如果发送的是跨域请求，需在配置文件中 config/index.js 进行配置
+
+### class scoped原理
+通过postcss转译实现，为组件中的dom添加一个data-v-hash值的属性
