@@ -677,6 +677,9 @@ parseInt("3", 2); // NaN
 - Promises 对象
 - async/await函数[ES7]
 
+### 简述async/await
+async/await是为了实现异步编程，async会把函数包装成Promise，而await会等待这个Promise处理，返回resolve的值。
+
 ### web 开发中会话跟踪的方法有哪些
 
 - cookie
@@ -1252,6 +1255,17 @@ function deepClone(obj) {
 - 禁止 this 指向全局对象
 - 不能使用 fn.caller 和 fn.arguments 获取函数调用的堆栈
 - 增加了保留字（比如 protected、static 和 interface）
+
+### ES6 let和var的区别
+- 作用域
+let为块级作用域
+var为函数作用域
+- 重复申明
+通过let定义的变量，在同个作用域下不能重复申明
+通过var定义的变量，在同个作用域下可以重复申明
+- 临时死区变量提升
+对var而言，代码在执行前会扫描所有var定义的变量，将其初始化为undefined。即变量提升。
+对let而言，也会有变量提升，但有所不同，在执行到之前，变量会被申明，若访问则会报referenceError。也就是let没有被初始化，不可访问。
 
 ### 编写一个方法 求一个字符串的字节长度
 
