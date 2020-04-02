@@ -175,6 +175,19 @@ FALLBACK:
   - sessionStorage: 数据在当前浏览器窗口关闭后自动删除。
   - cookie: 设置的 cookie 过期时间之前一直有效，即使窗口或浏览器关闭
 
+### localStorage实现同源页面传值
+```
+<!-- a.html -->
+window.addEventListener('storage', function(e) {
+  console.log(e)
+})
+
+<!-- b.html -->
+const value = '一个值';
+localstorage.setItem('key', value);
+```
+
+
 ### iframe 有那些缺点？
 
 - iframe 会阻塞主页面的 Onload 事件；
