@@ -360,6 +360,25 @@ html[xmlns*=""]:root #trece  { color: red  }
 }
 ```
 
+### 文字超出部分显示...
+- 单行
+```
+div {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+```
+- 多行
+```
+div {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2; // 行数
+}
+```
+
 ### 经常遇到的浏览器的兼容性有哪些？原因，解决方法是什么，常用 hack 的技巧 ？
 
 - png24 位的图片在 iE6 浏览器上出现背景，解决方案是做成 PNG8.
