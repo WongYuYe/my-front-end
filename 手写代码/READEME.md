@@ -385,3 +385,13 @@ function toLine(str) {
   return str.replace(/[A-Z]/g, '_$1')
 }
 ```
+
+### 封装new函数
+```
+function _new() {
+  var Func = [].shift.call(arguments)
+  var obj = Object.create(Func.prototype)
+  Func.apply(obj, arguments);
+  return obj
+}
+```
