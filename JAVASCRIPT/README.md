@@ -79,15 +79,14 @@ DOM 树 和 渲染树 的区别：
 - DOM 树与 HTML 标签一一对应，包括 head 和隐藏元素
 - 渲染树不包括 head 和隐藏元素，大段文本的每一个行都是独立节点，每一个节点都有对应的 css 属性
 
-### 重绘和回流（重排）的区别和关系？
+### 重绘和回流（重排），以及如何最小化？
 
 - 重绘：当渲染树中的元素外观（如：颜色）发生改变，不影响布局时，产生重绘
-- 回流：当渲染树中的元素的布局（如：尺寸、位置、隐藏/状态状态）发生改变时，产生重绘回流
+- 回流：当渲染树中的元素布局（如：尺寸、位置、隐藏/状态状态）发生改变时，产生重绘回流
 - 注意：JS 获取 Layout 属性值（如：offsetLeft、scrollTop、getComputedStyle 等）也会引起回流。因为浏览器需要通过回流计算最新值
 - 回流必将引起重绘，而重绘不一定会引起回流
 
-### 如何最小化重绘(repaint)和回流(reflow)？
-
+最小化操作
 - 需要要对元素进行复杂的操作时，可以先隐藏(display:"none")，操作完成后再显示
 - 需要创建多个 DOM 节点时，使用 DocumentFragment 创建完后一次性的加入 document
 - 缓存 Layout 属性值，如：var left = elem.offsetLeft; 这样，多次使用 left 只产生一次回流
@@ -124,6 +123,16 @@ JavaScript 变量声明提升：
 - JavaScript 的函数对象，除了原型 [proto] 之外，还预置了 prototype 属性
 - 当函数对象作为构造函数创建实例时，该 prototype 属性值将被作为实例对象的原型 [proto]。
 
+```js
+function Person() {}
+Person.prototype.name = 'su'
+Person.prototype.age = 18
+var person1 = new Person()
+console.log(person1.__proto__)  // Person{ name: 'su', age: 18 }
+console.log(Person.prototype)   // Person{ name: 'su', age: 18 }
+console.log(person1.__proto__ === Person.prototype)   // true
+```
+
 原型链：
 
 - 当一个对象调用的属性/方法自身不存在时，就会去自己 [proto] 关联的前辈 prototype 对象上去找
@@ -142,6 +151,8 @@ JavaScript 变量声明提升：
 - 引用数据类型存储在堆(heap)中的对象，占据空间大、大小不固定，如果存储在栈中，将会影响程序运行的性能；
 - 引用数据类型在栈中存储了指针，该指针指向堆中该实体的起始地址。
 - 当解释器寻找引用值时，会首先检索其在栈中的地址，取得地址后从堆中获得实体。
+
+![avatar](https://img.jbzj.com/file_images/article/201708/201708250850131.png)
 
 ### JavaScript 如何实现一个类，怎么实例化这个类？
 
@@ -558,50 +569,6 @@ var fireEvent = function(element, event) {
     return !element.dispatchEvent(mockEvent);
   }
 };
-```
-
-### 什么是函数防抖和节流？介绍一下应用场景和原理？
-
-- 函数防抖(debounce)是指阻止一个函数在很短时间间隔内调用。若在这个很短时间间隔内再次调用，会重新计算执行时间。
-- 函数节流(throttle)是指阻止一个函数在很短时间间隔内连续调用。 只有当上一次函数执行后达到规定的时间间隔，才能进行下一次调用。 但要保证一个累计最小调用间隔（否则拖拽类的节流都将无连续效果）
-- 常用于 onresize, onscroll 等短时间内会多次触发的事件
-- 函数防抖原理：使用定时器。 当触发一个事件时，先用 setTimout 让这个事件延迟一小段时间再执行。 如果在这个时间间隔内又触发了事件，就 clearTimeout 原来的定时器， 再 setTimeout 一个新的定时器重复以上流程。
-- 函数节流原理：使用定时器。 当触发一个事件时，先用 setTimout 让这个事件延迟一小段时间再执行。 计算开始时间和当前时间，当差值大于等于定时时，触发。
-
-简单实现：
-
-```js
-function lazyload() {
-  console.log("执行");
-}
-function debounce(method, context, delay) {
-  clearTimeout(method.tId);
-  method.tId = setTimeout(function() {
-    method.call(context);
-  }, delay);
-}
-window.onscroll = function() {
-  debounce(lazyload, this, 1000);
-};
-```
-
-```js
-function throttle(func, wait) {
-    let previous = new Date();
-    return function() {
-        let now = new Date();
-        let context = this;
-        if (now - previous >= wait) {
-            func.apply(context, arguments);
-            previous = now; // 执行后更新 previous 值
-        }
-    }
-}
-// 调用
-window.onscroll = throttle(lazyload, 1000);
-function lazyload() {
-  console.log("执行");
-}
 ```
 
 ### 区分什么是“客户区坐标”、“页面坐标”、“屏幕坐标”？
@@ -1344,7 +1311,7 @@ alert(GetBytes("你好,as"));
 
 ### 箭头函数和function的区别？
 - this指向
-箭头函数this指向定义函数的环境，function定义的函数，this指向随着调用环境的变化而变化
+箭头函数this指向定义函数的环境，function定义的函数，this指向随着调用环境的变化而变化,
 - 关于arguments
 该对象在箭头函数体内不存在，如要使用可以用rest参数代替
 - yield命令
@@ -1355,21 +1322,21 @@ alert(GetBytes("你好,as"));
 ### 简单实现 Function.bind 函数？
 
 ```js
-if (!Function.prototype.bind) {
-  Function.prototype.bind = function(that) {
-    var func = this,
-      args = arguments;
+if(!Function.prototype.bind) {
+  Function.prototype.bind = function(obj) {
+    var func = this;
     return function() {
-      return func.apply(that, Array.prototype.slice.call(args, 1));
-    };
-  };
+      func.apply(obj, [].slice.call(arguments, 1))
+    }
+  }
 }
-// 只支持 bind 阶段的默认参数：
 func.bind(that, arg1, arg2)();
-
-// 不支持以下调用阶段传入的参数：
-func.bind(that)(arg1, arg2);
 ```
+
+### bind/apply/call三者的区别
+bind返回的是一个函数，需要手动调用，而apply和call则直接调用。
+三者接收的第一个参数都是this指向的对象，
+第二个参数apply接收一个数组，bind和call一样，可以接收多个用逗号隔开的参数。
 
 ### 列举一下 JavaScript 数组和对象有哪些原生方法
 
@@ -1464,11 +1431,11 @@ if (new Boolean(false)) {
 只有使用了 valueOf 后才是真正的转换布尔值，与上面包装对象与原始资料转换说明的相同:
 
 ```js
-!!new Boolean(false) //true
+!!l.;[p] //true
 new Boolean(false).valueOf(); //false
 ```
 
-### typeof 的原理，与 instanceof 、 Object.toString.call() 的区别
+### typeof 的原理，与 instanceof 、 Object.prototype.toString.call() 的区别
 
 - js在底层存储变量，会在低位1-3存储类型信息，如000对象、010浮点数、100字符串、110布尔、1整数，null都为0，undefined-2^30
 typeof不能判断array、object、null

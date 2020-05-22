@@ -199,4 +199,4 @@ export default {
 </script>
 ```
 
-- SSR
+- SSR nuxt.js
