@@ -1,21 +1,6 @@
 ### 快排
 
-```
-// 双循环
-const quickSort = function (arr) {
-  for(let i = 0, len = arr.length; i < len; i ++) {
-    for(let j = i + 1, len = arr.length; j < len; j ++) {
-     if (arr[i] > arr[j]) {
-        var temp = arr[i];
-        arr[i] = arr[j];
-        arr[j] = temp;
-      }
-    }
-  }
-  console.log(arr)
-}
-quickSort([1,4,2,3,8,6,5])
-
+```js
 // 分治法，1. 取基准值 2. 小于基准值的移到左边left，大于基准值的移到右边right 3. 对left和right两个子集不断重复第一二步
 const quickSort = function (arr) {
   if (arr.length < 1) {

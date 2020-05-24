@@ -291,3 +291,198 @@ strong, em, ins, del, code
 - title 属性可以用在除了 base，basefont，head，html，meta，param，script 和 title 之外的所有标签。
 - title 属性的功能是提示。额外的说明信息和非本质的信息请使用 title 属性。title 属性值可以比 alt 属性值设置的更长。
 - title 属性有一个很好的用途，即为链接添加描述性文字，特别是当连接本身并不是十分清楚的表达了链接的目的。
+
+### 介绍 DOM 的发展
+
+- DOM：文档对象模型（Document Object Model），定义了访问 HTML 和 XML 文档的标准，与编程语言及平台无关
+- DOM0：提供了查询和操作 Web 文档的内容 API。未形成标准，实现混乱。如：document.forms['login']
+- DOM1：W3C 提出标准化的 DOM，简化了对文档中任意部分的访问和操作。如：JavaScript 中的 Document 对象
+- DOM2：原来 DOM 基础上扩充了鼠标事件等细分模块，增加了对 CSS 的支持。如：getComputedStyle(elem, pseudo)
+- DOM3：增加了 XPath 模块和加载与保存（Load and Save）模块。如：XPathEvaluator
+
+### 介绍 DOM0，DOM2，DOM3 事件处理方式区别
+
+DOM0 级事件处理方式：
+
+- btn.onclick = func;
+- btn.onclick = null;
+
+DOM2 级事件处理方式：
+
+- btn.addEventListener('click', func, false); true: 捕获 false: 冒泡
+- btn.removeEventListener('click', func, false);
+- btn.attachEvent("onclick", func);
+- btn.detachEvent("onclick", func);
+
+DOM3 级事件处理方式：
+
+- eventUtil.addListener(input, "textInput", func);
+- eventUtil 是自定义对象，textInput 是 DOM3 级事件
+
+### 事件的三个阶段
+
+捕获、目标、冒泡
+
+### 介绍事件“捕获”和“冒泡”执行顺序和事件的执行次数？
+
+按照 W3C 标准的事件：首是进入捕获阶段，直到达到目标元素，再进入冒泡阶段
+
+事件执行次数（DOM2-addEventListener）：元素上绑定事件的个数
+
+- 注意 1：前提是事件被确实触发
+- 注意 2：事件绑定几次就算几个事件，即使类型和功能完全一样也不会“覆盖”
+
+事件执行顺序：判断的关键是否目标元素
+
+- 非目标元素：根据 W3C 的标准执行：捕获->目标元素->冒泡（不依据事件绑定顺序）
+- 目标元素：依据事件绑定顺序：先绑定的事件先执行（不依据捕获冒泡标准）
+- 最终顺序：父元素捕获->目标元素事件 1->目标元素事件 2->子元素捕获->子元素冒泡->父元素冒泡
+- 注意：子元素事件执行前提 事件确实“落”到子元素布局区域上，而不是简单的具有嵌套关系
+
+### 在一个 DOM 上同时绑定两个点击事件：一个用捕获，一个用冒泡。事件会执行几次，先执行冒泡还是捕获？
+
+- 该 DOM 上的事件如果被触发，会执行两次（执行次数等于绑定次数）
+- 如果该 DOM 是目标元素，则按事件绑定顺序执行，不区分冒泡/捕获
+- 如果该 DOM 是处于事件流中的非目标元素，则先执行捕获，后执行冒泡
+
+### 事件的代理/委托
+
+事件委托是指将事件绑定目标元素的到父元素上，利用冒泡机制触发该事件
+
+优点：
+
+- 可以减少事件注册，节省大量内存占用
+- 可以将事件应用于动态添加的子元素上
+
+缺点： 使用不当会造成事件在不应该触发时触发
+
+示例：
+
+```js
+ulEl.addEventListener(
+  "click",
+  function(e) {
+    var target = event.target || event.srcElement;
+    if (!!target && target.nodeName.toUpperCase() === "LI") {
+      console.log(target.innerHTML);
+    }
+  },
+  false
+);
+```
+
+### IE 与火狐的事件机制有什么区别？ 如何阻止冒泡？
+
+IE 只事件冒泡，不支持事件捕获；火狐同时支持件冒泡和事件捕获。
+
+阻止冒泡：
+
+- 取消默认操作: w3c 的方法是 e.preventDefault()，IE 则是使用 e.returnValue = false;
+- return false javascript 的 return false 只会阻止默认行为，而是用 jQuery 的话则既阻止默认行为又防止对象冒泡。
+- 阻止冒泡 w3c 的方法是 e.stopPropagation()，IE 则是使用 e.cancelBubble = true
+
+```js
+[js] view plaincopy
+function stopHandler(event)
+
+    window.event?window.event.cancelBubble=true:event.stopPropagation();
+
+}
+```
+
+参考链接:[浅谈 javascript 事件取消和阻止冒泡-开源中国 2015](http://wiki.jikexueyuan.com/project/brief-talk-js/event-cancellation-and-prevent-bubbles.html)
+
+### IE 的事件处理和 W3C 的事件处理有哪些区别？(必考)
+
+绑定事件
+
+- W3C: targetEl.addEventListener('click', handler, false);
+- IE: targetEl.attachEvent('onclick', handler);
+
+删除事件
+
+- W3C: targetEl.removeEventListener('click', handler, false);
+- IE: targetEl.detachEvent(event, handler);
+
+事件对象
+
+- W3C: var e = arguments.callee.caller.arguments[0]
+- IE: window.event
+
+事件目标
+
+- W3C: e.target
+- IE: window.event.srcElement
+
+阻止事件默认行为
+
+- W3C: e.preventDefault()
+- IE: window.event.returnValue = false'
+
+阻止事件传播
+
+- W3C: e.stopPropagation()
+- IE: window.event.cancelBubble = true
+
+### W3C 事件的 target 与 currentTarget 的区别？
+
+- target 只会出现在事件流的目标阶段
+- currentTarget 可能出现在事件流的任何阶段
+- 当事件流处在目标阶段时，二者的指向相同
+- 当事件流处于捕获或冒泡阶段时：currentTarget 指向当前事件活动的对象(一般为父级)
+
+### 如何派发事件(dispatchEvent)？（如何进行事件广播？）
+
+- W3C: 使用 dispatchEvent 方法
+- IE: 使用 fireEvent 方法
+
+```js
+var fireEvent = function(element, event) {
+  if (document.createEventObject) {
+    var mockEvent = document.createEventObject();
+    return element.fireEvent("on" + event, mockEvent);
+  } else {
+    var mockEvent = document.createEvent("HTMLEvents");
+    mockEvent.initEvent(event, true, true);
+    return !element.dispatchEvent(mockEvent);
+  }
+};
+```
+
+### 区分什么是“客户区坐标”、“页面坐标”、“屏幕坐标”？
+
+- 客户区坐标：鼠标指针在可视区中的水平坐标(clientX)和垂直坐标(clientY)
+
+  相对于浏览器的左上定点为原点
+
+- 页面坐标：鼠标指针在页面布局中的水平坐标(pageX)和垂直坐标(pageY)
+
+  相对于 Document 对象即文档窗口的左上顶点为坐标原点
+
+- 屏幕坐标：设备物理屏幕的水平坐标(screenX)和垂直坐标(screenY)
+
+### 如何获得一个 DOM 元素的绝对位置？
+
+- elem.offsetLeft：返回元素相对于其定位父级左侧的距离
+- elem.offsetTop：返回元素相对于其定位父级顶部的距离
+- elem.getBoundingClientRect()：返回一个 DOMRect 对象，包含一组描述边框的只读属性，单位像素
+
+### DOM 操作——怎样添加、移除、移动、复制、创建和查找节点?
+
+创建新节点
+
+- createDocumentFragment() //创建一个 DOM 片段
+- createElement() //创建一个具体的元素
+- createTextNode() //创建一个文本节点
+
+添加、移除、替换、插入
+
+- appendChild()
+- removeChild()
+- replaceChild()
+- insertBefore() //在已有的子节点前插入一个新的子节点
+
+查找
+
+- getElementsByTagName() //通过标签名称
+- getElementsByName() // 通过元素的 Name 属性的值(IE 容错能力较强，会得到一个数组，其中包括 id 等于 name 值的) \* getElementById() //通过元素 Id，唯一性

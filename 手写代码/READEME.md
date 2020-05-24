@@ -315,10 +315,11 @@ if (!Function.prototype.bind) {
   Function.prototype.bind = function (ctx) {
     const args = arguments;
     return function () {
-      this.apply(ctx, Array.prototype.slice.call(args, 1))
+      this.apply(ctx, [].slice.call(args, 1))
     }
   }
 }
+func.bind(that, arg1, arg2)();
 ```
 
 [underscore 源码](https://github.com/hanzichi/underscore-analysis/blob/master/underscore-1.8.3.js/src/underscore-1.8.3.js#L698-L719%E3%80%82)
@@ -394,4 +395,36 @@ function _new() {
   Func.apply(obj, arguments);
   return obj
 }
+```
+
+### 编写一个方法 求一个字符串的字节长度
+
+假设：一个英文字符占用一个字节，一个中文字符占用两个字节
+
+```js
+function GetBytes(str) {
+  var len = str.length;
+
+  var bytes = len;
+
+  for (var i = 0; i < len; i++) {
+    if (str.charCodeAt(i) > 255) bytes++;
+  }
+
+  return bytes;
+}
+
+alert(GetBytes("你好,as"));
+```
+
+### 多维数组拍平
+
+- 使用es6的flat方法，flat()，默认拍平一层，可以flat(x)，x代表层数，也可以使用Infinity，表示全部。返回一个新数组。
+- flatMap，则先调用map，再调用flat()，只能拍平一层
+```js
+[1,2,[3,4,[5,6]]].flat(Infinity)
+// [1,2,3,4,5,6]
+
+[1,2,3].flatMap(x => [x, x*2])
+// [1,2,2,4,3,6]
 ```
