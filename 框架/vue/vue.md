@@ -1,4 +1,4 @@
-<!-- v1.1 -->
+<!-- v1.2 -->
 ### vue 的优点是什么？
 
 - 低耦合。视图（View）可以独立于 Model 变化和修改，一个 ViewModel 可以绑定到不同的"View"上，当 View 变化的时候 Model 可以不变，当 Model 变化的时候 View 也可以不变。
@@ -72,7 +72,6 @@
   }
 </script>
 
-//
 
 <template>
   <main @fcnc="fClick">{{data}}</main>
@@ -95,7 +94,7 @@
 
 - 全局定义指令：在 vue 对象的 directive 方法里面有两个参数, 一个是指令名称, 另一个是函数。
 - 组件内定义指令：directives
-- 钩子函数: bind(绑定事件出发)、inserted(节点插入时候触发)、update(组件内相关更新)
+- 钩子函数: bind(绑定事件出发)、inserted(节点插入时候触发)、update(组件内相关更新)、componentUpdated、unbind
 - 钩子函数参数： el、binding
 
 ### 说出至少 4 种 vue 当中的指令和它的用法
@@ -200,3 +199,5 @@ export default {
 ```
 
 - SSR nuxt.js
+- extenals
+- dll
