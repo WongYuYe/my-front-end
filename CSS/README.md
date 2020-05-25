@@ -1,111 +1,9 @@
+<!-- v1.1 -->
 ### css: transform 多值执行顺序
 - 如transform: rotate(90deg) translate(100px, 100px); 按照后写的先执行
 
 ### transform:translateZ(0) 提升性能？
 - 使用transform和opacity做CSS动画的时候，会将元素提升为一个复合层；而使用js操作css属性做动画时，必须使用translateZ或will-change才能将元素强行提升至一个复合层。
-
-### display: none; 与 visibility: hidden; 的区别
-
-相同： 它们都能让元素不可见
-
-区别：
-
-- display:none;会让元素完全从渲染树中消失，渲染的时候不占据任何空间；visibility: hidden;不会让元素从渲染树消失，渲染师元素继续占据空间，只是内容不可见
-- display: none;是非继承属性，子孙节点消失由于元素从渲染树消失造成，通过修改子孙节点属性无法显示；visibility:hidden;是继承属性，子孙节点消失由于继承了 hidden，通过设置 visibility: visible;可以让子孙节点显式
-- 修改常规流中元素的 display 通常会造成文档重排。修改 visibility 属性只会造成本元素的重绘
-- 读屏器不会读取 display: none;元素内容；会读取 visibility: hidden 元素内容
-
-### css hack 原理及常用 hack
-
-原理：利用不同浏览器对 CSS 的支持和解析结果不一样编写针对特定浏览器样式。常见的 hack 有 1）属性 hack。2）选择器 hack。3）IE 条件注释
-
-IE 条件注释：适用于[IE5, IE9]常见格式如下
-
-```html
-<!--[if IE 6]>
-Special instructions for IE 6 here
-<![endif]-->
-```
-
-选择器 hack：不同浏览器对选择器的支持不一样
-
-```css
-/***** Selector Hacks ******/
-
-/* IE6 and below */
-* html #uno  { color: red }
-
-/* IE7 */
-*:first-child+html #dos { color: red }
-
-/* IE7, FF, Saf, Opera  */
-html>body #tres { color: red }
-
-/* IE8, FF, Saf, Opera (Everything but IE 6,7) */
-html>/**/body #cuatro { color: red }
-
-/* Opera 9.27 and below, safari 2 */
-html:first-child #cinco { color: red }
-
-/* Safari 2-3 */
-html[xmlns*=""] body:last-child #seis { color: red }
-
-/* safari 3+, chrome 1+, opera9+, ff 3.5+ */
-body:nth-of-type(1) #siete { color: red }
-
-/* safari 3+, chrome 1+, opera9+, ff 3.5+ */
-body:first-of-type #ocho {  color: red }
-
-/* saf3+, chrome1+ */
-@media screen and (-webkit-min-device-pixel-ratio:0) {
- #diez  { color: red  }
-}
-
-/* iPhone / mobile webkit */
-@media screen and (max-device-width: 480px) {
- #veintiseis { color: red  }
-}
-
-/* Safari 2 - 3.1 */
-html[xmlns*=""]:root #trece  { color: red  }
-
-/* Safari 2 - 3.1, Opera 9.25 */
-*|html[xmlns*=""] #catorce { color: red  }
-
-/* Everything but IE6-8 */
-:root *> #quince { color: red  }
-
-/* IE7 */
-*+html #dieciocho {  color: red }
-
-/* Firefox only. 1+ */
-#veinticuatro,  x:-moz-any-link  { color: red }
-
-/* Firefox 3.0+ */
-#veinticinco,  x:-moz-any-link, x:default  { color: red  }
-```
-
-属性 hack：不同浏览器解析 bug 或方法
-
-```css
-/* IE6 */
-#once { _color: blue }
-
-/* IE6, IE7 */
-#doce { *color: blue; /* or #color: blue */ }
-
-/* Everything but IE6 */
-#diecisiete { color/**/: blue }
-
-/* IE6, IE7, IE8 */
-#diecinueve { color: blue\9; }
-
-/* IE7, IE8 */
-#veinte { color/*\**/: blue\9; }
-
-/* IE6, IE7 -- acts as an !important */
-#veintesiete { color: blue !ie; } /* string after ! can be anything */
-```
 
 ### link 与 @import 的区别
 
@@ -133,16 +31,6 @@ html[xmlns*=""]:root #trece  { color: red  }
 - color
 - visibility
 - cursor
-
-### display,float,position 的关系
-
-- 如果 display 为 none，那么 position 和 float 都不起作用，这种情况下元素不产生框
-- 否则，如果 position 值为 absolute 或者 fixed，框就是绝对定位的，float 的计算值为 none，display 根据下面的表格进行调整
-- 否则，如果 float 不是 none，框是浮动的，display 根据下表进行调整
-- 否则，如果元素是根元素，display 根据下表进行调整
-- 其他情况下 display 的值为指定值 总结起来：绝对定位、浮动、根元素都需要调整 display
-
-  ![display关系](../imgs/display关系.png)
 
 ### 外边距折叠(collapsing margins)
 
@@ -193,110 +81,15 @@ html[xmlns*=""]:root #trece  { color: red  }
 
 ### 如何居中 div？如何居中一个浮动元素？如何让绝对定位的 div 居中？
 
-如果需要居中的元素为常规流中 inline 元素，为父元素设置 text-align: center;即可实现
+- 如果需要居中的元素为常规流中 inline 元素，为父元素设置 text-align: center;即可实现
 
-如果需要居中的元素为常规流中 block 元素，1）为元素设置宽度，2）设置左右 margin 为 auto。3）IE6 下需在父元素上设置 text-align: center;,再给子元素恢复需要的值
+- 如果需要居中的元素为常规流中 block 元素，1）为元素设置宽度，2）设置左右 margin 为 auto。
 
-```html
-<body>
-    <div class="content">
-    aaaaaa aaaaaa a a a a a a a a
-    </div>
-</body>
+- 如果需要居中的元素为浮动元素，1）为元素设置宽度，2）position: relative;，3）浮动方向偏移量（left 或者 right）设置为 50%，4）浮动方向上的 margin 设置为元素宽度一半乘以-1
 
-<style>
-    body {
-        background: #DDD;
-        text-align: center; /* 3 */
-    }
-    .content {
-        width: 500px;      /* 1 */
-        text-align: left;  /* 3 */
-        margin: 0 auto;    /* 2 */
+- 如果需要居中的元素为绝对定位元素，1）为元素设置宽度，2）偏移量设置为 50%，3）偏移方向外边距设置为元素宽度一半乘以-1
 
-        background: purple;
-    }
-</style>
-```
-
-如果需要居中的元素为浮动元素，1）为元素设置宽度，2）position: relative;，3）浮动方向偏移量（left 或者 right）设置为 50%，4）浮动方向上的 margin 设置为元素宽度一半乘以-1
-
-```html
-<body>
-    <div class="content">
-    aaaaaa aaaaaa a a a a a a a a
-    </div>
-</body>
-
-<style>
-    body {
-        background: #DDD;
-    }
-    .content {
-        width: 500px;         /* 1 */
-        float: left;
-
-        position: relative;   /* 2 */
-        left: 50%;            /* 3 */
-        margin-left: -250px;  /* 4 */
-
-        background-color: purple;
-    }
-</style>
-```
-
-如果需要居中的元素为绝对定位元素，1）为元素设置宽度，2）偏移量设置为 50%，3）偏移方向外边距设置为元素宽度一半乘以-1
-
-```html
-<body>
-    <div class="content">
-    aaaaaa aaaaaa a a a a a a a a
-    </div>
-</body>
-
-<style>
-    body {
-        background: #DDD;
-        position: relative;
-    }
-    .content {
-        width: 800px;
-
-        position: absolute;
-        left: 50%;
-        margin-left: -400px;
-
-        background-color: purple;
-    }
-</style>
-```
-
-如果需要居中的元素为绝对定位元素，1）为元素设置宽度，2）设置左右偏移量都为 0,3）设置左右外边距都为 auto
-
-```html
-<body>
-    <div class="content">
-    aaaaaa aaaaaa a a a a a a a a
-    </div>
-</body>
-
-<style>
-    body {
-        background: #DDD;
-        position: relative;
-    }
-    .content {
-        width: 800px;
-
-        position: absolute;
-        margin: 0 auto;
-        left: 0;
-        right: 0;
-
-        background-color: purple;
-    }
-</style>
-```
+- 如果需要居中的元素为绝对定位元素，1）为元素设置宽度，2）设置左右偏移量都为 0,3）设置左右外边距都为 auto
 
 ### 如何竖直居中一个元素
 
@@ -308,12 +101,13 @@ html[xmlns*=""]:root #trece  { color: red  }
 
 ### display 有哪些值？说明他们的作用
 
-- block 象块类型元素一样显示。
-- none 缺省值。象行内元素类型一样显示。
-- inline-block 象行内元素一样显示，但其内容象块类型元素一样显示。
-- list-item 象块类型元素一样显示，并添加样式列表标记。
+- block 像块类型元素一样显示。
+- none 缺省值。像行内元素类型一样显示。
+- inline-block 像行内元素一样显示，但其内容像块类型元素一样显示。
+- list-item 像块类型元素一样显示，并添加样式列表标记。
 - table 此元素会作为块级表格来显示
-- inherit 规定应该从父元素继承 display 属性的值
+- inherit 规定应该从父元素继承 display 
+- flex 弹性布局
 
 ### position 有哪些值 relative 和 absolute 定位原点是？
 
@@ -379,30 +173,11 @@ div {
 }
 ```
 
-### 经常遇到的浏览器的兼容性有哪些？原因，解决方法是什么，常用 hack 的技巧 ？
+### display:inline-block 间隙问题原因？怎么解决？(携程)
 
-- png24 位的图片在 iE6 浏览器上出现背景，解决方案是做成 PNG8.
-- 浏览器默认的 margin 和 padding 不同。解决方案是加一个全局的\*{margin:0;padding:0;}来统一
-- IE 下,可以使用获取常规属性的方法来获取自定义属性,也可以使用 getAttribute()获取自定义属性;
-- Firefox 下,只能使用 getAttribute()获取自定义属性。解决方法:统一通过 getAttribute()获取自定义属性
-- IE 下,even 对象有 x,y 属性,但是没有 pageX,pageY 属性
-- Firefox 下,event 对象有 pageX,pageY 属性,但是没有 x,y 属性
+原因：行框的排列会受到中间空白（回车\空格）等的影响，因为空格也属于字符,这些空白也会被应用样式，占据空间。
 
-### li 与 li 之间有看不见的空白间隔是什么原因引起的？有什么解决办法？(也称幽灵字符)
-
-行框的排列会受到中间空白（回车\空格）等的影响，因为空格也属于字符,这些空白也会被应用样式，占据空间，所以会有间隔，把字符大小设为 0，就没有空格了
-
-### display:inline-block 间隙问题怎么解决？(携程)
-
-移除空格、使用 margin 负值、使用 font-size:0、letter-spacing、word-spacing
-
-### display:inline-block 什么时候会显示间隙？
-
-- 相邻的 inline-block 元素之间有换行或空格分隔的情况下会产生间距
-- 非 inline-block 水平元素设置为 inline-block 也会有水平间距
-- 可以借助 vertical-align:top; 消除垂直间隙
-- 可以在父级加 font-size：0; 在子元素里设置需要的字体大小，消除垂直间隙
-- 把 li 标签写到同一行可以消除垂直间隙，但代码可读性差
+解决方案：移除空格、使用 margin 负值、使用 font-size:0、letter-spacing、word-spacing
 
 ### css 定义的权重
 网上有声称诸如id权重100，class权重10等计算方法，这是不正确的。
@@ -438,7 +213,6 @@ style=""     /* a=1 b=0 c=0 d=0 -> 优先级 = 1,0,0,0 */
 有一幅生动的图可以展示这个规则：
 ![大鱼吃小鱼](http://image.zhangxinxu.com/image/blog/201208/specifishity1-1.png)
 
-
 ### CSS 优先级算法如何计算？
 
 - 优先级就近原则，同权重情况下样式定义最近者为准
@@ -454,14 +228,16 @@ style=""     /* a=1 b=0 c=0 d=0 -> 优先级 = 1,0,0,0 */
 1. 父级 div 定义伪类：after 和 zoom (推荐使用，建议定义公共类，以减少 CSS 代码)
 
 ```css
-   .clearfloat:after{
-       display:block;
-       clear:both;
-       content:"";
-       visibility:hidden;
-       height:0}
-
-   .clearfloat{zoom:1}
+    .clearfloat:after {
+        content: "", // 内容为空
+        display: block, // 转化为块
+        visibility: hidden, // 隐藏
+        height: 0, // 高度为0
+        clear: both, // 清除浮动
+    }
+    .clearfloat {
+        *zoom: 1 // *为ie6,7专用处理
+    }
 ```
 
 2. 在结尾处添加空 div 标签 clear:both
@@ -478,13 +254,23 @@ style=""     /* a=1 b=0 c=0 d=0 -> 优先级 = 1,0,0,0 */
     .clearfloat{clear:both}
 </style>
 ```
+3. 双伪元素清除浮动(强力推荐)
 
-3. 父级 div 定义 height
+```css
+.clearfloat:before,
+.clearfloat:after {
+    display: table,
+    content: "",
+}
+.clearfloat:after {
+    clear: both
+}
+.clearfloat {
+    *zoom: 1
+}
+```
 4. 父级 div 定义 overflow:auto
 5. 父级 div 定义 overflow:hidden
-6. 父级 div 也一起浮动
-7. 父级 div 定义 display:table
-8. 结尾处加 br 标签 clear:both
 
 参考链接[几种常用的清除浮动方法](https://www.cnblogs.com/nxl0908/p/7245460.html)
 
@@ -503,7 +289,7 @@ style=""     /* a=1 b=0 c=0 d=0 -> 优先级 = 1,0,0,0 */
 - transform: scale(0); 将一个元素设置为缩放无限小，元素将不可见，元素原来所在的位置将被保留
 - \<div hidden="hidden"\> HTML5 属性,效果和 display:none;相同，但这个属性用于记录一个元素的状态
 - height: 0; 将元素高度设为 0 ，并消除边框
-- filter: blur(0); CSS3 属性，将一个元素的模糊度设置为 0，从而使这个
+- filter: blur(0); CSS3 属性，将一个元素的模糊度设置为 0
 
 ### rgba() 和 opacity 的透明效果有什么不同？
 
@@ -608,118 +394,23 @@ Flexbox 用于不同尺寸屏幕中创建可自动扩展和收缩布局
 }
 ```
 
-### 在 CSS 样式中常使用 px、em 在表现上有什么区别？
+### 在 CSS 样式中常使用 px、em、rem、vw 在表现上有什么区别？
 
 - px 相对于显示器屏幕分辨率，无法用浏览器字体放大功能
 - em 值并不是固定的，会继承父级的字体大小： em = 像素值 / 父级 font-size
 - rem 值并不是固定的，会继承根元素html的字体大小： rem = 像素值 / 根元素 font-size
 - vw 根据视口调整大小，整个视口为宽度为100vw
 
-### 为什么要初始化 CSS 样式？
-
-- 不同浏览器对有些标签样式的默认值解析不同
-- 不初始化 CSS 会造成各现浏览器之间的页面显示差异
-- 可以使用 reset.css 或 Normalize.css 做 CSS 初始化
-
-### reset.css 和 Normalize.css 理解
-
-reset.css 意为重置默认样式。HTML 中绝大部分标签元素在网页显示中都有一个默认属性值，通常为了避免重复定义元素样式，需要进行重置默认样式
-
-Eric Meyer（CSS Reset）推荐
-
-```css
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, font, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td {
-    margin: 0;
-    padding: 0;
-    border: 0;
-    outline: 0;
-    font-size: 100%;
-    vertical-align: baseline;
-    background: transparent;
-}
-body {
-    line-height: 1;
-}
-ol, ul {
-    list-style: none;
-}
-blockquote, q {
-    quotes: none;
-}
-blockquote:before, blockquote:after,
-q:before, q:after {
-    content: '';
-    content: none;
-}
-/* remember to define focus styles! */
-:focus {
-    outline: 0;
-}
-/* remember to highlight inserts somehow! */
-ins {
-    text-decoration: none;
-}
-del {
-    text-decoration: line-through;
-}
-/* tables still need ‘cellspacing=”0″‘ in the markup */
-table {
-    border-collapse: collapse;
-    border-spacing: 0;
-}
-```
-
-Normalize.css 只是一个很小的 css 文件,但它在默认的 HTML 元素样式上提供了跨浏览器的高度一致性。相比于传统的 css reset，Normalize.css 是一种现代的，为 HTML5 准备的优质替代方案。
-
-Normalize.css 是一种 CSS reset 的替代方案。经过@necolas 和@jon neal 花了几百个小时来努力研究不同浏览器的默认样式的差异，这个项目终于变成了现在这样。
-
-我们创造 normalize.css 有下几个目的：
-
-- 保护有用的浏览器默认样式而不是完全去掉它们
-- 一般化的样式：为大部分 HTML 元素提供
-- 修复浏览器自身的 bug 并保证各浏览器的一致性
-- 优化 CSS 可用性：用一些小技巧
-- 解释代码：用注释和详细的文档来
-
-### 介绍使用过的 CSS 预处理器？
+### CSS 预处理器的作用？
 
 - CSS 预处理器基本思想：为 CSS 增加了一些编程的特性（变量、逻辑判断、函数等）
 - 开发者使用这种语言进行进行 Web 页面样式设计，再编译成正常的 CSS 文件使用
 - 使用 CSS 预处理器，可以使 CSS 更加简洁、适应性更强、可读性更佳，无需考虑兼容性
 - 最常用的 CSS 预处理器语言包括：Sass（SCSS）和 LESS
 
-### CSS 优化、提高性能的方法有哪些？
-
-- 多个 css 合并，尽量减少 HTTP 请求
-- 将 css 文件放在页面最上面
-- 移除空的 css 规则
-- 避免使用 CSS 表达式
-- 选择器优化嵌套，尽量避免层级过深
-- 充分利用 css 继承属性，减少代码量
-- 抽象提取公共样式，减少代码量
-- 属性值为 0 时，不加单位（可以减少字节数）
-- 属性值为小于 1 的小数时，省略小数点前面的 0
-- css 雪碧图
-
 ### 浏览器是怎样解析 CSS 选择器的？
 
 浏览器解析 CSS 选择器的方式是从右到左
-
-### 在网页中的应该使用奇数还是偶数的字体？
-
-在网页中的应该使用“偶数”字体：
-
-- 偶数字号相对更容易和 web 设计的其他部分构成比例关系
-- 使用奇数号字体时文本段落无法对齐
-- 宋体的中文网页排布中使用最多的就是 12 和 14
 
 ### 抽离样式模块怎么写，说出思路？
 
@@ -810,27 +501,9 @@ p:first-child {color: red}
 - 由于低版本 IE 对双冒号不兼容，开发者为了兼容性各浏览器，继续使使用 :after 这种老语法表示伪元素
 - 综上所述：::before 是 CSS3 中写伪元素的新语法； :after 是 CSS1 中存在的、兼容 IE 的老语法
 
-### 如何修改 Chrome 记住密码后自动填充表单的黄色背景？
-
-- 产生原因：由于 Chrome 默认会给自动填充的 input 表单加上 input:-webkit-autofill 私有属性造成的
-- 解决方案 1：在 form 标签上直接关闭了表单的自动填充：autocomplete="off"
-- 解决方案 2：input:-webkit-autofill { background-color: transparent; }
-
-input [type=search] 搜索框右侧小图标如何美化？
-
-```css
-input[type="search"]::-webkit-search-cancel-button{
-  -webkit-appearance: none;
-  height: 15px;
-  width: 15px;
-  border-radius: 8px;
-  background:url("images/searchicon.png") no-repeat 0 0;
-  background-size: 15px 15px;
-}
-```
-
 ### 网站图片文件，如何点击下载？而非点击预览？
 
+给a标签添加download属性
 ```html
 <a href="logo.jpg" download>下载</a> <a href="logo.jpg" download="网站LOGO" >下载</a>
 ```
@@ -853,7 +526,6 @@ input[type="search"]::-webkit-search-cancel-button{
 - 如果一个标签没有定义 height 属性，那么其最终表现的高度是由 line-height 决定的
 - 一个容器没有设置高度，那么撑开容器高度的是 line-height 而不是容器内的文字内容
 - 把 line-height 值设置为 height 一样大小的值可以实现单行文字的垂直居中
-- line-height 和 height 都能撑开一个高度，height 会触发 haslayout，而 line-height 不会
 
 ### line-height 三种赋值方式有何区别？（带单位、纯数字、百分比）
 
@@ -865,15 +537,6 @@ input[type="search"]::-webkit-search-cancel-button{
 
 设置元素浮动后，该元素的 display 值自动变成 block
 
-### 怎么让 Chrome 支持小于 12px 的文字？
-
-```css
-  .shrink{
-    -webkit-transform:scale(0.8);
-    -o-transform:scale(1);
-    display:inline-block;
-  }
-```
 
 ### 让页面里的字体变清晰，变细用 CSS 怎么做？（IOS 手机浏览器字体齿轮设置）
 
@@ -905,25 +568,6 @@ font-style: oblique; 使没有 italic 属性的文字实现倾斜
 
 更直接的：id 给 js 用，class 给 css 用（趋势）
 
-### 如何优化网页的打印样式
-
-```html
-<link rel="stylesheet" type="text/css" media="screen" href="xxx.css" />
-```
-
-其中 media 指定的属性就是设备，显示器上就是 screen，打印机则是 print，电视是 tv，投影仪是 projection。
-
-```html
- <link rel="stylesheet" type="text/css" media="print" href="yyy.css" />
-```
-
-但打印样式表也应有些注意事项：
-
-- 打印样式表中最好不要用背景图片，因为打印机不能打印 CSS 中的背景。如要显示图片，请使用 html 插入到页面中。
-- 最好不要使用像素作为单位，因为打印样式表要打印出来的会是实物，所以建议使用 pt 和 cm。
-- 隐藏掉不必要的内容。（@print div{display:none;}）
-- 打印样式表中最好少用浮动属性，因为它们会消失。
-
 ### 请问为何要使用 transform 而非 absolute positioning，或反之的理由？为什么？
 
 - 使用 transform 或 position 实现动画效果时是有很大差别。
@@ -936,11 +580,6 @@ font-style: oblique; 使没有 italic 属性的文字实现倾斜
 - tranform 改变 fixed 子元素的定位对象
 - transform 改变元素层叠顺序
   [transform 的副作用](http://imweb.io/topic/5a23e1f1a192c3b460fce26e)
-
-### 请解释 CSS sprites，以及你要如何在页面或网站中实现它
-
-- CSS Sprites 其实就是把网页中一些背景图片整合到一张图片文件中，再利用 CSS 的“background-image”，“background- repeat”，“background-position”的组合进行背景定位，background-position 可以用数字能精确的定位出背景图片的位置。
-- CSS Sprites 为一些大型的网站节约了带宽，让提高了用户的加载速度和用户体验，不需要加载更多的图片。
 
 ### 你熟悉 SVG 样式的书写吗？
 
