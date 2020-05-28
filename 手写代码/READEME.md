@@ -388,13 +388,12 @@ function toLine(str) {
 ```
 
 ### 封装new函数
-```
-function _new() {
-  var Func = [].shift.call(arguments)
-  var obj = Object.create(Func.prototype)
-  Func.apply(obj, arguments);
-  return obj
-}
+```js
+function _new(fn) {
+  var obj = Object.create(fn.prototype);
+  var ret = fn.call(obj)
+  return typeof ret === 'object' ? ret : obj;//确保构造器总是返回一个对象
+};
 ```
 
 ### 编写一个方法 求一个字符串的字节长度
@@ -427,4 +426,27 @@ alert(GetBytes("你好,as"));
 
 [1,2,3].flatMap(x => [x, x*2])
 // [1,2,2,4,3,6]
+```
+
+### 深拷贝
+```js
+function deepClone(obj) {
+  if (!isObj(obj)) {
+    return obj
+  }
+  const target = Array.isArray(obj)? []: {};
+  for(let k in obj) {
+    if (obj.hasOwnProperty(k)) {
+      if (isObj(obj[k])) {
+        target[k] = deepClone(obj[k])
+      } else {
+        target[k] = obj[k]
+      }
+    }
+  }
+  return target
+}
+function isObj(obj) {
+  return Object.prototype.toString().call(obj) === '[object object]';
+}
 ```
