@@ -1001,3 +1001,18 @@ instanceof不能判断Number、String、Boolean
 执行过程中遇到上边提到的调度者，会同步执行调度者，由调度者将其负责的任务（回调函数）放到对应的任务队列中，直到主执行栈清空，然后开始执行微任务的任务队列。微任务也清空后，再次从宏任务开始，一直循环这一过程。
 
 参考地址:[Event Loop](https://segmentfault.com/a/1190000019900532)
+
+
+### ES6新特性
+- let和const
+- 变量的解构
+  - 对象解构
+  - 数组解构
+  - 字符串解构
+- Proxy
+- Reflect
+- Promise
+- Iterator和for of
+- Generator
+- Class
+- Module  
