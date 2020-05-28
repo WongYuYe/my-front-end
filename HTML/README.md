@@ -300,28 +300,31 @@ strong, em, ins, del, code
 - DOM2：原来 DOM 基础上扩充了鼠标事件等细分模块，增加了对 CSS 的支持。如：getComputedStyle(elem, pseudo)
 - DOM3：增加了 XPath 模块和加载与保存（Load and Save）模块。如：XPathEvaluator
 
-### 介绍 DOM0，DOM2，DOM3 事件处理方式区别
+### 介绍 DOM0，DOM2，DOM3 事件模型
 
-DOM0 级事件处理方式：
+DOM0 级：没有事件流的概念，事件处理方式：
 
 - btn.onclick = func;
 - btn.onclick = null;
 
-DOM2 级事件处理方式：
-
-- btn.addEventListener('click', func, false); true: 捕获 false: 冒泡
-- btn.removeEventListener('click', func, false);
-- btn.attachEvent("onclick", func);
-- btn.detachEvent("onclick", func);
-
-DOM3 级事件处理方式：
-
-- eventUtil.addListener(input, "textInput", func);
-- eventUtil 是自定义对象，textInput 是 DOM3 级事件
-
-### 事件的三个阶段
-
-捕获、目标、冒泡
+DOM2 级
+- W3C标准（IE9+其他浏览器）
+  - 事件捕获
+  - 事件处理
+  - 事件冒泡
+  事件处理方式：
+  - btn.addEventListener('click', func, false); true: 捕获 false: 冒泡
+  - btn.removeEventListener('click', func, false);
+- IE标准（IE8及以下）
+  - 事件处理
+  - 事件冒泡
+  事件处理方式：
+  - btn.attachEvent("onclick", func);
+  - btn.detachEvent("onclick", func);
+  
+DOM3 级：在DOM2级事件的基础上添加了更多的事件类型，同时也允许使用者自定义一些事件，事件处理方式：
+  - eventUtil.addListener(input, "textInput", func);
+  - eventUtil 是自定义对象，textInput 是 DOM3 级事件
 
 ### 介绍事件“捕获”和“冒泡”执行顺序和事件的执行次数？
 
@@ -371,27 +374,6 @@ ulEl.addEventListener(
 );
 ```
 
-### IE 与火狐的事件机制有什么区别？ 如何阻止冒泡？
-
-IE 只事件冒泡，不支持事件捕获；火狐同时支持件冒泡和事件捕获。
-
-阻止冒泡：
-
-- 取消默认操作: w3c 的方法是 e.preventDefault()，IE 则是使用 e.returnValue = false;
-- return false javascript 的 return false 只会阻止默认行为，而是用 jQuery 的话则既阻止默认行为又防止对象冒泡。
-- 阻止冒泡 w3c 的方法是 e.stopPropagation()，IE 则是使用 e.cancelBubble = true
-
-```js
-[js] view plaincopy
-function stopHandler(event)
-
-    window.event?window.event.cancelBubble=true:event.stopPropagation();
-
-}
-```
-
-参考链接:[浅谈 javascript 事件取消和阻止冒泡-开源中国 2015](http://wiki.jikexueyuan.com/project/brief-talk-js/event-cancellation-and-prevent-bubbles.html)
-
 ### IE 的事件处理和 W3C 的事件处理有哪些区别？(必考)
 
 绑定事件
@@ -423,6 +405,8 @@ function stopHandler(event)
 
 - W3C: e.stopPropagation()
 - IE: window.event.cancelBubble = true
+
+参考链接:[浅谈 javascript 事件取消和阻止冒泡-开源中国 2015](http://wiki.jikexueyuan.com/project/brief-talk-js/event-cancellation-and-prevent-bubbles.html)
 
 ### W3C 事件的 target 与 currentTarget 的区别？
 
