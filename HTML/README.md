@@ -486,3 +486,11 @@ var fireEvent = function(element, event) {
 
 - getElementsByTagName() //通过标签名称
 - getElementsByName() // 通过元素的 Name 属性的值(IE 容错能力较强，会得到一个数组，其中包括 id 等于 name 值的) \* getElementById() //通过元素 Id，唯一性
+
+### 页面生命周期
+- DOMContentLoaded：DOM树构建完毕，js可以访问到DOM
+  - async和defer的脚本可能还没执行完
+  - 图片及其他外链资源还没加载完
+- loaded：所有资源加载完毕
+- beforeunload：用户即将离开页面时触发，返回一个字符串
+- unload：用户离开后触发
