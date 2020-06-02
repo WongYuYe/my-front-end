@@ -74,54 +74,7 @@ JS 引擎则：解析和执行 javascript 来实现网页的动态效果。
     ```
 
 - 如何区分 HTML5： DOCTYPE 声明\新增的结构元素\功能元素
-    ```html
-    - 新增的结构元素:
-    （1）section
-    表示页面中的一个内容区块，比如章节，页眉，页脚或页面中的其他部分。它可以与h1，h2，h3，h4，h5，h6等元素结合起来使用，标示文档结构。
-    （2）article
-    表示页面中的一块与上下文不相关的独立内容，譬如博客中的一篇文章或报纸中的一篇文章。
-    （3）aside
-    表示article元素的内容之外的，与article元素的内容相关的辅助信息。
-    （4）header
-    表示页面中一个内容区块或整个页面的标题。
-    （5）hgroup
-    用于对整个页面或页面中一个内容区块的标题进行组合。
-    （6）footer
-    表示整个页面或页面中一个内容区块的脚注。一般来说，它会包含创作者的姓名，创作日期以及创作者联系信息。
-    （7）nav
-    表示页面中导航链接的部分。
-    （8）figure
-    表示一段独立的流内容，一般表示文档主体流内容的一个独立单元。使用figcaption元素为figure元素组添加标题。
-    ```
-    ```html
-    - 新增的功能元素：
-    hgroup元素：用于对整个页面或页面中一个内容区块的标题进行组合。
-    figure元素：表示一段独立的流内容，一般表示文档主题流内容中的一个独立单元。
-    video元素：定义视频，比如电影片段或其他视频流。
-    audio元素：定义音频，比如音乐或其他音频流。
-    embed元素：用来插入各种多媒体，格式可以是MIDI、WAV、AIFF、AU、MP3等。
-    mark元素：主要用来在视觉上向用户呈现需要突出显示或高亮显示的文字。
-    time元素：表示日期或时间，也可以同时表示两者。
-    canvas元素：表示图形，如图表和其他图像。
-    output元素：表示不同类型的输出，比如脚本的输出。
-    source元素：为媒介元素定义媒介资源。
-    menu元素：表示菜单列表。当希望列出表单控制时使用该标签。
-    ruby元素：表示ruby注释。
-    rt元素：表示字符的解释或发音。
-    rp元素：在ruby解释中使用，以定义不支持ruby元素的浏览器所显示的内容。
-    wbr元素：表示软换行。
-    command元素：表示命令按钮，如单选按钮、复选框或按钮。
-    details元素：表示用户要求得到并且可以得到的细节信息，可与summary 元素配合使用。
-    datalist元素：可选数据的列表，与input元素配合使用，可以制作出输入值的下拉列表。
-    datagrid元素：表示可选数据的列表，它以树形列表的形式来显示。
-    keygen元素：表示生成密钥。
-    progress元素：表示运行中的进程，可以使用progress来显示JavaScript中耗费时间的函数的进程。
-    email：表示必须输入E-mail地址的文本输入框。
-    url：表示必须输入URL地址的文本输入框。
-    number：表示必须输入数值的文本输入框。
-    range：表示必须输入一定范围内数字值的文本输入框。
-    Date Pickers：HTML5拥有多个可供选取日期和时间的新型输入文本框。
-    ```
+
 ### 简述一下你对 HTML 语义化的理解？
 
 - 用正确的标签做正确的事情。
@@ -156,6 +109,7 @@ FALLBACK:
 ```
 
 - 在线的情况下，浏览器发现 html 头部有 manifest 属性，它会请求 manifest 文件，如果是第一次访问 app，那么浏览器就会根据 manifest 文件的内容下载相应的资源并且进行离线存储。如果已经访问过 app 并且资源已经离线存储了，那么浏览器就会使用离线的资源加载页面，然后浏览器会对比新的 manifest 文件与旧的 manifest 文件，如果文件没有发生改变，就不做任何操作，如果文件改变了，那么就会重新下载文件中的资源并进行离线存储。
+
 - 离线的情况下，浏览器就直接使用离线存储的资源。
 
 3. 在离线状态时，操作 window.applicationCache 进行需求实现。
@@ -175,7 +129,7 @@ FALLBACK:
   - sessionStorage: 数据在当前浏览器窗口关闭后自动删除。
   - cookie: 设置的 cookie 过期时间之前一直有效，即使窗口或浏览器关闭
 
-### localStorage实现同源页面传值
+### localStorage实现同源不同页面传值
 ```
 <!-- a.html -->
 window.addEventListener('storage', function(e) {
@@ -186,7 +140,6 @@ window.addEventListener('storage', function(e) {
 const value = '一个值';
 localstorage.setItem('key', value);
 ```
-
 
 ### iframe 有那些缺点？
 
@@ -204,7 +157,7 @@ label 标签来定义表单控制间的关系,当用户选择该标签时，浏�
 
 ```html
   <label for="Name">Number:</label>
-  <input type=“text“name="Name" id="Name"/>
+  <input type="text" name="Name" id="Name"/>
   <label>Date:<input type="text" name="B"/></label>
 ```
 
@@ -217,11 +170,9 @@ label 标签来定义表单控制间的关系,当用户选择该标签时，浏�
 - WebSocket、SharedWorker；
 - 也可以调用 localstorage、cookies 等本地存储方式；
 
-localstorage 另一个浏览上下文里被添加、修改或删除时，它都会触发一个storage事件，
+同源不同页面中localstorage 另一个浏览上下文里被添加、修改或删除时，它都会触发一个storage事件，
 
 我们通过监听事件，控制它的值来进行页面信息通信；
-
-注意 quirks：Safari 在无痕模式下设置 localstorage 值时会抛出 QuotaExceededError 的异常；
 
 ### webSocket 如何兼容低浏览器？(阿里)
 
@@ -270,10 +221,8 @@ strong, em, ins, del, code
 
 ### html 中 title 属性和 alt 属性的区别？
 
-```html
-<img src="#" alt="alt信息" />
-<img src="#" alt="alt信息" title="title信息" />
-```
+title是额外的说明文字，当鼠标移动到图片上会提示
+alt是图片路径有误时的默认显示
 
 ### img标签之间的间距问题？
 
@@ -283,14 +232,6 @@ strong, em, ins, del, code
 1. 父元素font-size: 0； 
 2. 父元素vertical-align: middle
 3. img元素 display: inline -> block
-
-
-
-### 另外还有一些关于 title 属性的知识：
-
-- title 属性可以用在除了 base，basefont，head，html，meta，param，script 和 title 之外的所有标签。
-- title 属性的功能是提示。额外的说明信息和非本质的信息请使用 title 属性。title 属性值可以比 alt 属性值设置的更长。
-- title 属性有一个很好的用途，即为链接添加描述性文字，特别是当连接本身并不是十分清楚的表达了链接的目的。
 
 ### 介绍 DOM 的发展
 
@@ -313,7 +254,7 @@ DOM2 级
   - 事件处理
   - 事件冒泡
   事件处理方式：
-  - btn.addEventListener('click', func, false); true: 捕获 false: 冒泡
+  - btn.addEventListener('click', func, false); // true: 捕获 false: 冒泡
   - btn.removeEventListener('click', func, false);
 - IE标准（IE8及以下）
   - 事件处理
@@ -340,7 +281,6 @@ DOM3 级：在DOM2级事件的基础上添加了更多的事件类型，同时�
 - 非目标元素：根据 W3C 的标准执行：捕获->目标元素->冒泡（不依据事件绑定顺序）
 - 目标元素：依据事件绑定顺序：先绑定的事件先执行（不依据捕获冒泡标准）
 - 最终顺序：父元素捕获->目标元素事件 1->目标元素事件 2->子元素捕获->子元素冒泡->父元素冒泡
-- 注意：子元素事件执行前提 事件确实“落”到子元素布局区域上，而不是简单的具有嵌套关系
 
 ### 在一个 DOM 上同时绑定两个点击事件：一个用捕获，一个用冒泡。事件会执行几次，先执行冒泡还是捕获？
 
@@ -356,10 +296,6 @@ DOM3 级：在DOM2级事件的基础上添加了更多的事件类型，同时�
 
 - 可以减少事件注册，节省大量内存占用
 - 可以将事件应用于动态添加的子元素上
-
-缺点： 使用不当会造成事件在不应该触发时触发
-
-示例：
 
 ```js
 ulEl.addEventListener(
@@ -469,7 +405,8 @@ var fireEvent = function(element, event) {
 查找
 
 - getElementsByTagName() //通过标签名称
-- getElementsByName() // 通过元素的 Name 属性的值(IE 容错能力较强，会得到一个数组，其中包括 id 等于 name 值的) \* getElementById() //通过元素 Id，唯一性
+- getElementsByName() // 通过元素的 Name 属性的值(IE 容错能力较强，会得到一个数组，其中包括 id 等于 name 值的)
+- getElementById() // 通过元素 Id，唯一性
 
 ### 页面生命周期
 - DOMContentLoaded：DOM树构建完毕，js可以访问到DOM

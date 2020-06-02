@@ -5,33 +5,6 @@
 ### transform:translateZ(0) 提升性能？
 - 使用transform和opacity做CSS动画的时候，会将元素提升为一个复合层；而使用js操作css属性做动画时，必须使用translateZ或will-change才能将元素强行提升至一个复合层。
 
-### link 与 @import 的区别
-
-- link 是 HTML 方式， @import 是 CSS 方式
-- link 最大限度支持并行下载，@import 过多嵌套导致串行下载，出现 FOUC
-- link 可以通过 rel="alternate stylesheet" 指定候选样式
-- 浏览器对 link 支持早于@import ，可以使用 @import 对老浏览器隐藏样式
-- @import 必须在样式规则之前，可以在 css 文件中引用其他文件
-- 总体来说：link 优于@import
-
-### CSS 有哪些继承属性
-
-- 关于文字排版的属性如：
-  - font
-  - word-break
-  - letter-spacing
-  - text-align
-  - text-rendering
-  - word-spacing
-  - white-space
-  - text-indent
-  - text-transform
-  - text-shadow
-- line-height
-- color
-- visibility
-- cursor
-
 ### 外边距折叠(collapsing margins)
 
 外边距重叠就是 margin-collapse
@@ -52,18 +25,6 @@
 - 怪异(IE)盒模型：元素宽度 = width + margin
 - 区 别： IE 的 content 部分把 border 和 padding 计算了进去;
 - 标准浏览器通过设置 css3 的 box-sizing: border-box 属性，触发“怪异模式”解析计算宽高
-
-### CSS 选择符有哪些？
-
-- id 选择器（ # myid）
-- 类选择器（.myclassname）
-- 标签选择器（div, h1, p）
-- 相邻选择器（h1 + p）
-- 子选择器（ul > li）
-- 后代选择器（li a）
-- 通配符选择器（ \* ）
-- 属性选择器（a[rel = "external"]）
-- 伪类选择器（a:hover, li:nth-child）
 
 ### CSS3 新增伪类有那些？
 
@@ -116,30 +77,7 @@
 - relative 生成相对定位的元素，相对于其正常位置进行定位。
 - static 默认值。没有定位，元素出现在正常的流中（忽略 top, bottom, left, right - z-index 声明）。
 - inherit 规定从父元素继承 position 属性的值
-
-### CSS3 有哪些新特性？
-
-- 新增选择器 p:nth-child(n){color: rgba(255, 0, 0, 0.75)}
-- 弹性盒模型 display: flex;
-- 多列布局 column-count: 5;
-- 媒体查询 @media (max-width: 480px) {.box: {column-count: 1;}}
-- 个性化字体 @font-face{font-family: BorderWeb; src:url(BORDERW0.eot);}
-- 颜色透明度 color: rgba(255, 0, 0, 0.75);
-- 圆角 border-radius: 5px;
-- 渐变 background:linear-gradient(red, green, blue);
-- 阴影 box-shadow:3px 3px 3px rgba(0, 64, 128, 0.3);
-- 倒影 box-reflect: below 2px;
-- 文字装饰 text-stroke-color: red;
-- 文字溢出 text-overflow:ellipsis;
-- 背景效果 background-size: 100px 100px;
-- 边框效果 border-image:url(bt_blue.png) 0 10;
-- 平滑过渡 transition: all .3s ease-in .1s;
-- 动画 @keyframes anim-1 {50% {border-radius: 50%;}} animation: anim-1 1s;
-- 转换
-  - 旋转 transform: rotate(20deg);
-  - 倾斜 transform: skew(150deg, -10deg);
-  - 位移 transform: translate(20px, 20px);
-  - 缩放 transform: scale(.5);
+- sticky 是相对定位relative和固定定位fixed的结合；它主要用在对scroll事件的监听上；简单来说，在滑动过程中，某个元素距离其父元素的距离达到sticky粘性定位的要求时(比如top：100px)；position:sticky这时的效果相当于fixed定位，固定到适当位置。
 
 ### 用纯 CSS 创建一个三角形的原理是什么？
 
@@ -180,6 +118,7 @@ div {
 解决方案：移除空格、使用 margin 负值、使用 font-size:0、letter-spacing、word-spacing
 
 ### css 定义的权重
+
 网上有声称诸如id权重100，class权重10等计算方法，这是不正确的。
 实际上应该如下：
 1. 如果一个声明来自style属性而不是选择器，计作1或者a=1（在一个html文档中，元素“style”的值是样式表规则，这个规则中没有选择器，所以a=1, b=0, c=0, and d=0）
@@ -212,12 +151,6 @@ style=""     /* a=1 b=0 c=0 d=0 -> 优先级 = 1,0,0,0 */
 
 有一幅生动的图可以展示这个规则：
 ![大鱼吃小鱼](http://image.zhangxinxu.com/image/blog/201208/specifishity1-1.png)
-
-### CSS 优先级算法如何计算？
-
-- 优先级就近原则，同权重情况下样式定义最近者为准
-- 载入样式以最后载入的为准
-- 优先级为: !important > id > class > tag important 比 内联优先级高
 
 ### 谈谈浮动和清除浮动
 
@@ -296,10 +229,6 @@ style=""     /* a=1 b=0 c=0 d=0 -> 优先级 = 1,0,0,0 */
 - opacity 作用于元素以及元素内的所有内容（包括文字）的透明度
 - rgba() 只作用于元素自身的颜色或其背景色，子元素不会继承透明效果
 
-### css 属性 content 有什么作用？
-
-content 属性专门应用在 before/after 伪元素上，用于插入额外内容或样式
-
 ### 请解释一下 CSS3 的 Flexbox（弹性盒布局模型）以及适用场景？
 
 Flexbox 用于不同尺寸屏幕中创建可自动扩展和收缩布局
@@ -311,88 +240,13 @@ Flexbox 用于不同尺寸屏幕中创建可自动扩展和收缩布局
 - align-items: flex-start | flex-end | center | baseline | strech 交叉轴Y轴
 - align-content: 多交叉轴，及多级flex布局 flex-start | flex-end | center | strech | space-between | space-around
 
-- flex-item:
+flex-item:
 - flex-grow: 扩展
 - flex-shrink: 缩放
 - flex-basic: 项目大小
 - flex: none | [<flex-grow, flex-shrink> || flex-basic], 默认值0 1 auto，快捷值auto(1 1 auto), none(0 0 auto) 
 - order: 顺序，越小越前面
 - align-self: 继承align-items，默认auto | flex-start | flex-end | center | baseline | strech
-
-
-### 请写出多种等高布局
-
-- 在列的父元素上使用这个背景图进行 Y 轴的铺放，从而实现一种等高列的假像
-- 模仿表格布局等高列效果：兼容性不好，在 ie6-7 无法正常运行
-- css3 flexbox 布局： .container{display: flex; align-items: stretch;}
-
-### 圣杯布局的实现原理？
-
-要求：三列布局；中间主体内容前置，且宽度自适应；两边内容定宽
-
-好处：重要的内容放在文档流前面可以优先渲染
-
-原理：利用相对定位、浮动、负边距布局，而不添加额外标签
-
-```css
-  .container {
-      padding-left: 150px;
-      padding-right: 190px;
-  }
-  .main {
-      float: left;
-      width: 100%;
-  }
-  .left {
-      float: left;
-      width: 190px;
-      margin-left: -100%;
-      position: relative;
-      left: -150px;
-  }
-  .right {
-      float: left;
-      width: 190px;
-      margin-left: -190px;
-      position: relative;
-      right: -190px;
-  }
-```
-
-### 什么是双飞翼布局？实现原理？
-
-双飞翼布局：对圣杯布局（使用相对定位，对以后布局有局限性）的改进，消除相对定位布局
-
-原理：主体元素上设置左右边距，预留两翼位置。左右两栏使用浮动和负边距归位，消除相对定位。
-
-```css
-.container {
-    /*padding-left:150px;*/
-    /*padding-right:190px;*/
-}
-.main-wrap {
-    width: 100%;
-    float: left;
-}
-.main {
-    margin-left: 150px;
-    margin-right: 190px;
-}
-.left {
-    float: left;
-    width: 150px;
-    margin-left: -100%;
-    /*position: relative;*/
-    /*left:-150px;*/
-}
-.right {
-    float: left;
-    width: 190px;
-    margin-left: -190px;
-    /*position:relative;*/
-    /*right:-190px;*/
-}
-```
 
 ### 在 CSS 样式中常使用 px、em、rem、vw 在表现上有什么区别？
 
@@ -421,44 +275,17 @@ CSS 可以拆分成 2 部分：公共 CSS 和 业务 CSS：
 
 ### 元素竖向的百分比设定是相对于容器的高度吗？
 
-元素竖向的百分比设定是相对于容器的宽度，而不是高度（这句话说的有问题）
-正确说法：如果是height的话，是相对于容器高度，如果是padding-height,margin-height则是相对于容器的宽度。
+如果是height的话，是相对于容器高度，如果是padding-height,margin-height则是相对于容器的宽度。
 
 ### 全屏滚动的原理是什么？ 用到了 CSS 的那些属性？
 
 - 原理类似图片轮播原理，超出隐藏部分，滚动时显示
 - 可能用到的 CSS 属性：overflow:hidden; transform:translate(100%, 100%); display:none;
 
-### 什么是响应式设计？响应式设计的基本原理是什么？如何兼容低版本的 IE？
+### 响应式设计的基本原理是什么？如何兼容低版本的 IE？
 
-- 响应式设计就是网站能够兼容多个终端，而不是为每个终端做一个特定的版本
 - 基本原理是利用 CSS3 媒体查询，为不同尺寸的设备适配不同样式
 - 对于低版本的 IE，可采用 JS 获取屏幕宽度，然后通过 resize 方法来实现兼容：
-
-```js
-$(window).resize(function () {
-    screenRespond();
-});
-
-screenRespond();
-
-function screenRespond(){
-
-    var screenWidth = $(window).width();
-
-    if(screenWidth <= 1800){
-        $("body").attr("class", "w1800");
-    }
-
-    if(screenWidth <= 1400){
-        $("body").attr("class", "w1400");
-    }
-
-    if(screenWidth > 1800){
-        $("body").attr("class", "");
-    }
-}
-```
 
 ### 什么是视差滚动效果，如何给每页做不同的动画？
 
@@ -505,19 +332,8 @@ p:first-child {color: red}
 
 给a标签添加download属性
 ```html
-<a href="logo.jpg" download>下载</a> <a href="logo.jpg" download="网站LOGO" >下载</a>
-```
-
-### iOS safari 如何阻止“橡皮筋效果”？
-
-```js
-  $(document).ready(function(){
-      var stopScrolling = function(event) {
-          event.preventDefault();
-      }
-      document.addEventListener('touchstart', stopScrolling, false);
-      document.addEventListener('touchmove', stopScrolling, false);
-  });
+<a href="logo.jpg" download>下载</a>
+<a href="logo.jpg" download="网站LOGO" >下载</a>
 ```
 
 ### 你对 line-height 是如何理解的？
@@ -527,46 +343,19 @@ p:first-child {color: red}
 - 一个容器没有设置高度，那么撑开容器高度的是 line-height 而不是容器内的文字内容
 - 把 line-height 值设置为 height 一样大小的值可以实现单行文字的垂直居中
 
-### line-height 三种赋值方式有何区别？（带单位、纯数字、百分比）
-
-- 带单位：px 是固定值，而 em 会参考父元素 font-size 值计算自身的行高
-- 纯数字：会把比例传递给后代。例如，父级行高为 1.5，子元素字体为 18px，则子元素行高为 1.5 \* 18 = 27px
-- 百分比：将计算后的值传递给后代
-
-### 设置元素浮动后，该元素的 display 值会如何变化？
-
-设置元素浮动后，该元素的 display 值自动变成 block
-
-
-### 让页面里的字体变清晰，变细用 CSS 怎么做？（IOS 手机浏览器字体齿轮设置）
-
-```css
-  -webkit-font-smoothing: antialiased;
-```
-
-### font-style 属性 oblique 是什么意思？
-
-font-style: oblique; 使没有 italic 属性的文字实现倾斜
-
 ### 如果需要手动写动画，你认为最小时间间隔是多久？
 
 16.7ms 多数显示器默认频率是 60Hz，即 1 秒刷新 60 次，所以理论上最小间隔: 1s / 60 \* 1000 ＝ 16.7ms
 
 ### overflow: scroll 时不能平滑滚动的问题怎么处理？
 
-监听滚轮事件，然后滚动到一定距离时用 jquery 的 animate 实现平滑效果。
+用JS实现滚动效果
 
 ### 一个高度自适应的 div，里面有两个 div，一个高度 100px，希望另一个填满剩下的高度
 
 - 方案 1： .sub { height: calc(100%-100px); }
 - 方案 2： .container { position:relative; } .sub { position: absolute; top: 100px; bottom: 0; }
 - 方案 3： .container { display:flex; flex-direction:column; } .sub { flex:1; }
-
-### CSS 中类 class 和 id 的区别
-
-对于 CSS 而言，id 和 class 都是选择器，唯一不同的地方在于权重不同。如果只说 CSS，上面那一句话就讲完了。拓展出来，对于 html 而言，id 和 class 都是 dom 元素的属性值。不同的地方在于 id 属性的值是唯一的，而 class 属性值可以重复。id 还一个老特性是锚点功能，当浏览器地址栏有一个#xxx，页面会自动滚动到 id=xxx 的元素上面。
-
-更直接的：id 给 js 用，class 给 css 用（趋势）
 
 ### 请问为何要使用 transform 而非 absolute positioning，或反之的理由？为什么？
 
