@@ -24,7 +24,7 @@
 - 标准(W3C)盒模型：元素宽度 = width + padding + border + margin
 - 怪异(IE)盒模型：元素宽度 = width + margin
 - 区 别： IE 的 content 部分把 border 和 padding 计算了进去;
-- 标准浏览器通过设置 css3 的 box-sizing: border-box 属性，触发“怪异模式”解析计算宽高
+- 标准浏览器默认box-sizing: content-box，通过设置 css3 的 box-sizing: border-box 属性，触发“怪异模式”解析计算宽高
 
 ### CSS3 新增伪类有那些？
 
