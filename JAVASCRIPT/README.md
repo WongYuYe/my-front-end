@@ -892,7 +892,7 @@ var为函数作用域
 - yield命令
 不可使用，因此箭头函数不能用作Generator函数
 - new
-不可使用new命令，因为没有自身的this,无法使用call、apply。没有Prototype属性。
+不可使用new命令，因为没有自身的this，无法使用call、apply。没有Prototype属性。
 
 ### bind/apply/call三者的区别
 bind返回的是一个函数，需要手动调用，而apply和call则直接调用。
@@ -982,12 +982,12 @@ true
 typeof不能判断array、object、null
 instanceof不能判断Number、String、Boolean
 
-### 浏览器中的 Event Loop
+### Event Loop（浏览器和NODE）
 
+#### 浏览器的event loop
 - 任务队列( Event Queue )
-所有的任务可以分为同步任务和异步任务，同步任务，顾名思义，就是立即执行的任务，同步任务一般会直接进入到主线程中执行；而异步任务，包含了独立于主执行栈之外的宏任务和微任务。比如ajax网络请求，setTimeout 定时函数等都属于异步任务，异步任务会通过任务队列的机制(先进先出的机制)来进行协调。
+所有的任务可以分为同步任务和异步任务，同步任务，顾名思义，就是立即执行的任务，同步任务一般会直接进入到主线程中执行，如script(整体代码)；而异步任务，包含了独立于主执行栈之外的宏任务和微任务。比如ajax网络请求，setTimeout 定时函数等都属于异步任务，异步任务会通过任务队列的机制(先进先出的机制)来进行协调。
 - 宏任务（task）
-  - script(整体代码)
   - setTimeout, setInterval, setImmediate,
   - I/O
   - UI rendering
@@ -997,10 +997,24 @@ instanceof不能判断Number、String、Boolean
   - Object.observe(已废弃)
   - MutationObserver(html5新特性)
 - 事件循环执行机制：
-循环首先从宏任务开始，遇到script，生成执行上下文，开始进入执行栈，可执行代码入栈，依次执行代码，调用完成出栈。
+循环首先从script，生成执行上下文，开始进入执行栈，可执行代码入栈，依次执行代码，调用完成出栈。
 执行过程中遇到上边提到的调度者，会同步执行调度者，由调度者将其负责的任务（回调函数）放到对应的任务队列中，直到主执行栈清空，然后开始执行微任务的任务队列。微任务也清空后，再次从宏任务开始，一直循环这一过程。
 
-参考地址:[Event Loop](https://segmentfault.com/a/1190000019900532)
+#### Node的event loop
+1. 在node10及之前版本，两者行为是是不一致。nodejs采用v8作为js的解析引擎，而I/O处理方面使用自己设计的libuv，libuv是一个基于事件驱动的跨平台抽象层，封装了不同操作系统一些底层特性，对外提供统一的API。如下图所示：
+![node](../IMGS/node系统)
+
+Node的运行机制如下：
+  - V8解析js脚本
+  - 解析后的代码调用Node API
+  - libuv负责Node API的执行，将不同的任务分配给不同的县城，形成一个Event Loop，以异步的方式将结果返回给V8
+  - V8返回结果给用户
+
+2. 六个阶段
+libuv引擎中的事件循环分为6个阶段，它们会按照顺序反复运行。每当进入某一个阶段时，都会从对应的回调队列中取出函数去执行。当队列为空或者执行的回调函数数量达到系统设定的阈值，就会进入下一阶段。
+![node](../IMGS/libuv六个阶段)
+
+参考地址:[Event Loop](https://juejin.im/post/5c337ae06fb9a049bc4cd218)
 
 
 ### ES6新特性
