@@ -144,7 +144,7 @@ function deepClone(obj) {
   if (!isObj(obj)) {
     return obj
   }
-  const target = Array.isArray(obj)? []: {};
+  const target = {};
   for(let k in obj) {
     if (obj.hasOwnProperty(k)) {
       if (isObj(obj[k])) {
@@ -157,6 +157,6 @@ function deepClone(obj) {
   return target
 }
 function isObj(obj) {
-  return Object.prototype.toString().call(obj) === '[object object]';
+  return Object.prototype.toString().call(obj) === '[object Object]';
 }
 ```
