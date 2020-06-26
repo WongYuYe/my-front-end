@@ -20,7 +20,7 @@ JavaScript 由以下三部分组成：
 
 - 数据封装类对象：Object、Array、Boolean、Number、String
 - 其他对象：Function、Arguments、Math、Date、RegExp、Error、JSON
-- ES6 新增对象：Symbol、Map、Set、Promises、Proxy、Reflect
+- ES6 新增对象：Symbol、Map、Set、Promise、Proxy、Reflect
 
 ### 如何编写高性能的 JavaScript？
 
@@ -328,7 +328,7 @@ var camry = new Car("凯美瑞", 27);
 camry.sell();
 ```
 
-### Javascript 作用链域?
+### Javascript 作用域链?
 
 - 全局函数无法查看局部函数的内部细节，但局部函数可以查看其上层的函数细节，直至全局细节
 - 如果当前作用域没有找到属性或方法，会向上层作用域查找，直至全局函数，这种形式就是作用域链
@@ -386,7 +386,7 @@ async/await是为了实现异步编程，async会把函数包装成Promise，而
 
 ### 什么是闭包（closure），为什么要用它？
 
-闭包是指有权访问另一个函数作用域中变量的函数，创建闭包的最常见的方式就是在一个函数内创建另一个函数，通过另一个函数访问这个函数的局部变量,利用闭包可以突破作用链域
+闭包是指有权访问另一个函数作用域中变量的函数，创建闭包的最常见的方式就是在一个函数内创建另一个函数，通过另一个函数访问这个函数的局部变量,利用闭包可以突破作用域链
 
 闭包的特性：
 

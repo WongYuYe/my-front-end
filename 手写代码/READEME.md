@@ -157,6 +157,6 @@ function deepClone(obj) {
   return target
 }
 function isObj(obj) {
-  return Object.prototype.toString().call(obj) === '[object Object]';
+  return Object.prototype.toString.call(obj) === '[object Object]';
 }
 ```

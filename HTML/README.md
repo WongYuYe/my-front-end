@@ -156,8 +156,10 @@ localstorage.setItem('key', value);
 label 标签来定义表单控制间的关系,当用户选择该标签时，浏览器会自动将焦点转到和标签相关的表单控件上。
 
 ```html
+  <!-- 第一种 -->
   <label for="Name">Number:</label>
   <input type="text" name="Name" id="Name"/>
+  <!-- 第二种 -->
   <label>Date:<input type="text" name="B"/></label>
 ```
 
@@ -346,8 +348,8 @@ ulEl.addEventListener(
 
 ### W3C 事件的 target 与 currentTarget 的区别？
 
-- target 只会出现在事件流的目标阶段
-- currentTarget 可能出现在事件流的任何阶段
+- target 只会出现在事件流的目标阶段，即触发的对象
+- currentTarget 可能出现在事件流的任何阶段，即绑定了事件的对象
 - 当事件流处在目标阶段时，二者的指向相同
 - 当事件流处于捕获或冒泡阶段时：currentTarget 指向当前事件活动的对象(一般为父级)
 
