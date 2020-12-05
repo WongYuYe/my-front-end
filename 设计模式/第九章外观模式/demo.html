@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title></title>
+</head>
+<body>
+	<div id="demo">添加事件</div>
+	<img src="sum.svg" style="color: #000">
+	<script type="text/javascript" src="facade.js"></script>
+	<script type="text/javascript">
+		var dom = document.getElementById('demo');
+
+		var _instance = null;
+		if (!_instance) {
+			me.addEvent(dom, 'click', function (event) {
+				var target = me.getTarget(event);
+				console.log(target);
+			});
+			_instance = 1;
+		}
+	</script>
+</body>
+</html>

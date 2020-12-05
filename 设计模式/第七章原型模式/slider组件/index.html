@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset='UTF-8'>
+	<title>Slider</title>
+	<style type="text/css">
+		html,
+		body {
+			overflow: hidden;
+		}
+		#container {
+			width: 60%;
+			height: 480px;
+			margin: 0 auto;
+			position: relative;
+			overflow: hidden;
+		}
+		.slider-wrapper {
+			position: absolute;
+			left: 0;
+			top: 0;
+		}
+		.slider-item {
+			/*float: left;*/
+		}
+		.arrow {
+			width: 48px;
+			height: 48px;
+			background-color: rgba(255, 255, 255, 0.4);
+			border-radius: 50%;
+			position: absolute;
+			top: 50%;
+			transform: translateY(-50%);
+			z-index: 1;
+			cursor: pointer;
+		}
+		.lft {
+			left: 10px;
+		}
+		.lft-arrow {
+			width: 16px;
+			height: 16px;
+			margin-top: 16px;
+			margin-left: 18px;
+			border-left: 2px solid #fff;
+			border-top: 2px solid #fff;
+			transform: rotate(-45deg);
+		}
+		.rgt {
+			right: 10px;
+		}
+		.rgt-arrow {
+			width: 16px;
+			height: 16px;
+			margin-top: 16px;
+			margin-left: 12px;
+			border-right: 2px solid #fff;
+			border-top: 2px solid #fff;
+			transform: rotate(45deg);
+		}
+	</style>
+</head>
+<body>
+	<div id="container"></div>
+	<script type="text/javascript" src="slider.js"></script>
+</body>
+</html>

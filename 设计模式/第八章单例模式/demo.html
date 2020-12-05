@@ -1,0 +1,32 @@
+<html>
+  <style type="text/css">
+    p {
+      overflow: hidden;
+      text-overflow: hidden;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
+  </style>
+  <body>
+    <button id="loginBtn">登陆</button>
+    <p style="width: 200px">我是登陆窗口我是登陆窗口我是登陆窗口我是登陆窗口我是登陆窗口我是登陆窗口我是登陆窗口我是登陆窗口我是登陆窗口我是登陆窗口我是登陆窗口我是登陆窗口我是登陆窗口我是登陆窗口我是登陆窗口我是登陆窗口我是登陆窗口我是登陆窗口我是登陆窗口我是登陆窗口我是登陆窗口我是登陆窗口我是登陆窗口我是登陆窗口我是登陆窗口我是登陆窗口我是登陆窗口我是登陆窗口我是登陆窗口我是登陆窗口我是登陆窗口我是登陆窗口我是登陆窗口我是登陆窗口我是登陆窗口我是登陆窗口我是登陆窗口我是登陆窗口</p>
+  </body>
+</html>
+<script>
+      var oDiv = null;
+       var createLogin = function(){
+        console.log(oDiv);
+          if(!oDiv){
+           oDiv = document.createElement('div');
+           oDiv.innerHTML = '我是登陆窗口';
+           oDiv.style.display = 'none';
+           document.body.appendChild(oDiv);
+          }
+          return oDiv
+        }
+       document.getElementById('loginBtn').onclick = function(){
+         var login = createLogin();
+         login.style.display = 'block';
+       }
+</script>
